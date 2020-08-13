@@ -3,9 +3,6 @@ const { Users } = require("../models");
 exports.getUsers = async (req, res) => {
     try {
         const users = await Users.findAll({
-            where: {
-                id: req.params.id
-            },
             attributes: {
                 exclude: ["createdAt", "updatedAt"],
             },
