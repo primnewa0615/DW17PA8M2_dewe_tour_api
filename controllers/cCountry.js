@@ -2,24 +2,15 @@ const { Country } = require("../models");
 
 exports.getCountry = async (req, res) => {
     try {
-        const countrys = Country.findAll({
-            attributes: {
-                exclude: ["createdAt", "updatedAt"],
-            },
-        })
-
-
+        const countries = await Country.findAll();
         res.status(200).send({
-            messege: "Response Seuccess",
-            data: {
-                countrys,
-            },
+            messege: "Response success",
+            data: { countries }
         });
     } catch (error) {
+        console.log(error);
         res.status(500).send({
-            error: {
-                messege: "Error",
-            },
+            messege: "response error"
         });
     }
 }
@@ -27,7 +18,7 @@ exports.getCountry = async (req, res) => {
 
 exports.getDetailCountry = async (req, res) => {
     try {
-        const country = Country.findAll({
+        const country = await Country.findAll({
             where: {
                 id: req.params.id,
             },
@@ -40,7 +31,7 @@ exports.getDetailCountry = async (req, res) => {
         res.status(200).send({
             messege: "Response Seuccess",
             data: {
-                countrys,
+                countries,
             },
         });
 

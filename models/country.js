@@ -15,13 +15,12 @@ module.exports = (sequelize, DataTypes) => {
   };
   Country.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER(11),
       primaryKey: true,
-      allowNull: false,
       autoIncrement: true,
+      allowNull: false,
     },
-    name: DataTypes.STRING,
-
+    name: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Country',
