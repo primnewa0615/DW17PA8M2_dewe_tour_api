@@ -14,9 +14,16 @@ module.exports = (sequelize, DataTypes) => {
       Trip.belongsTo(models.Country, {
         as: "country",
         foreignKey: {
-          name: "idCountry",
+          name: "idCountry"
         }
-      })
+      });
+
+      Trip.hasMany(models.Transaction, {
+        as: "trip",
+        foreignKey: "idTrip"
+      });
+
+
     }
   };
   Trip.init({
@@ -28,10 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     idCountry: {
       as: "country",
       foreignKey: {
-        name: "idCountry",
+        name: "idCountry"
       },
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
+
     accomadation: DataTypes.STRING,
     transportation: DataTypes.STRING,
     eat: DataTypes.STRING,
@@ -49,32 +57,3 @@ module.exports = (sequelize, DataTypes) => {
   return Trip;
 };
 
-exports.editTrip = async (req, res) => {
-  try {
-    const trip = await Trip.update(req.body, {
-      where: {
-        id: req.params.id,
-      }
-    });
-
-    const findTrip = await Trip.findOne({
-      where: {
-        id: req.params.id
-      },
-      attribute: {
-        exclude: ["createdAt", "updatedAt"]
-      }
-    })
-
-    res.status(200).send({
-      messege: `data dengan id ${req.params.id} BERHASIL diupdate`,
-      data: {
-
-      }
-    });
-  } catch (error) {
-    res.status(500).send({
-      messege: `data dengan id ${req.params.id} GAGAL diupdate`,
-    });
-  }
-}

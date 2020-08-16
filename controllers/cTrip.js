@@ -1,11 +1,19 @@
-const { Trip } = require("../models");
+const { Trip, Country } = require("../models");
 
 exports.getTrip = async (req, res) => {
     try {
         const trip = await Trip.findAll({
+            include: {
+                model: Country,
+                as: "country",
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                }
+            },
             attributes: {
                 exclude: ["createdAt", "updatedAt"],
-            },
+            }
+
         });
 
 
@@ -18,7 +26,7 @@ exports.getTrip = async (req, res) => {
             error: {
                 messege: "Error",
             }
-        })
+        });
     }
 }
 
@@ -31,12 +39,12 @@ exports.getDetailTrip = async (req, res) => {
             attributes: {
                 exclude: ["createdAt", "updatedAt"],
             }
-        })
+        });
 
         res.status(200).send({
             messege: "Reasponse of Detail Success",
             data: detailTrip
-        })
+        });
     } catch (error) {
         res.status(500).send({
             error: {
@@ -65,9 +73,7 @@ exports.editTrip = async (req, res) => {
 
         res.status(200).send({
             messege: `data dengan id ${req.params.id} BERHASIL diupdate`,
-            data: {
-
-            }
+            data: findTrip
         });
     } catch (error) {
         res.status(500).send({
@@ -94,9 +100,9 @@ exports.addTrip = async (req, res) => {
 
 exports.deleteTrip = async (req, res) => {
     try {
-        const trip = Trip.destroy({
+        const trip = await Trip.destroy({
             where: {
-                id= req.params.is
+                id: req.params.id
             }
         });
         res.status(200).send({

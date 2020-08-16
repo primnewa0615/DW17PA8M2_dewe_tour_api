@@ -2,10 +2,14 @@ const { Country } = require("../models");
 
 exports.getCountry = async (req, res) => {
     try {
-        const countries = await Country.findAll();
+        const countries = await Country.findAll({
+            attributes: {
+                exclude: ["createdAt", "updatedAt"]
+            }
+        });
         res.status(200).send({
             messege: "Response success",
-            data: { countries }
+            data: countries
         });
     } catch (error) {
         console.log(error);
