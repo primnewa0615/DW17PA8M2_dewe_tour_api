@@ -32,8 +32,8 @@ module.exports = {
           model: "Trips",
           key: "id"
         },
-        onDelete: "CACADE",
-        onDelete: "CACADE",
+        onDelete: "CASCADE",
+        onDelete: "CASCADE",
         type: Sequelize.INTEGER
       },
       createdAt: {
