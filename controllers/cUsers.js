@@ -117,7 +117,45 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
 
-    } catch (error) {
+        const { email, password } = req.body
+        const user = await User.findOne({
+            where: {
+                email
+            }
+        });
 
+        if (user) {
+            const checkPassword = await bcrypt.compare(password, user.password);
+            if (checkPassword) {
+                const token = jwt.sign({
+                    id: user.id
+                }, "primakk0615");
+
+                res.status(200).send({
+                    messege: "Login Berhasil",
+                    data: {
+                        email, token
+                    }
+                });
+            } else {
+                res.status(400).send({
+                    error: {
+                        message: "email atau password salah",
+                    },
+                });
+            }
+        } else {
+            res.status(400).send({
+                error: {
+                    message: "email atau password salah",
+                },
+            });
+        }
+    } catch (error) {
+        res.status(400).send({
+            error: {
+                messege: "Response gagal"
+            }
+        })
     }
 }

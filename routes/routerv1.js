@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getUsers, deleteUsers, register } = require("../controllers/cUsers");
+const { getUsers, deleteUsers, register, login } = require("../controllers/cUsers");
 const { getCountry, getDetailCountry, addCountry, editCountry } = require("../controllers/cCountry");
 const { getTrip, getDetailTrip, editTrip, addTrip, deleteTrip } = require("../controllers/cTrip");
 const { addTransaction, getTransaction, editTransaction, getDetailTransaction } = require("../controllers/cTransaction");
@@ -10,6 +10,7 @@ const { addTransaction, getTransaction, editTransaction, getDetailTransaction } 
 router.get("/users", getUsers);
 router.delete("/users/:id", deleteUsers);
 router.post("/register", register);
+router.post("/login", login);
 // COUNTRY
 router.get("/country", getCountry);
 router.get("/contry/:id", getDetailCountry);
