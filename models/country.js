@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
+      Country.hasMany(models.Trip, {
+        as: "country",
+        foreignKey: { name: "idCountry" }
+      })
     }
   };
   Country.init({
@@ -28,3 +31,5 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Country;
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////

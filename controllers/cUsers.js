@@ -28,6 +28,31 @@ exports.getUsers = async (req, res) => {
     }
 };
 
+exports.getUserByEmail = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            where: { email: req.params.email },
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+        });
+
+        res.status(200).send({
+            messege: "Response Success",
+            data: {
+                user
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: {
+                messege: "Error",
+            },
+        });
+    }
+};
+
 exports.deleteUsers = async (req, res,) => {
     try {
 
@@ -107,7 +132,7 @@ exports.register = async (req, res) => {
     } catch (error) {
         res.status(500).send({
             error: {
-                messege: "Response Gagal"
+                messege: error
             }
         });
 
@@ -131,23 +156,23 @@ exports.login = async (req, res) => {
                     id: user.id
                 }, "primakk0615");
 
-                res.status(200).send({
+                return res.status(200).send({
                     messege: "Login Berhasil",
                     data: {
                         email, token
                     }
                 });
             } else {
-                res.status(400).send({
-                    error: {
-                        message: "email atau password salah",
-                    },
+                return res.status(400).send({
+
+                    messege: "Email atau Password salah",
+
                 });
             }
         } else {
-            res.status(400).send({
+            return res.status(400).send({
                 error: {
-                    message: "email atau password salah",
+                    message: "Email atau Password salah",
                 },
             });
         }
@@ -159,3 +184,111 @@ exports.login = async (req, res) => {
         })
     }
 }
+
+exports.uploadImgProfile = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                email: req.query.email
+            }
+        })
+        const userImg = await User.update({ img: req.files.fileImage.path }, {
+            where: {
+                email: user.email
+            }
+
+        });
+        res.status(200).send({
+            messege: "Profile berhasil diganti",
+            data: { user }
+        });
+    } catch (error) {
+        res.status(400).send({
+            error: {
+                messege: error
+            }
+        })
+    }
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 'use strict';
+// const {
+//   Model
+// } = require('sequelize');
+// module.exports = (sequelize, DataTypes) => {
+//   class User extends Model {
+//     /**
+//      * Helper method for defining associations.
+//      * This method is not a part of Sequelize lifecycle.
+//      * The `models/index` file will call this method automatically.
+//      */
+//     static associate(models) {
+//       // define association here
+//     }
+//   };
+//   User.init({
+//     id: {
+//       type: DataTypes.INTEGER,
+//       primaryKey: true
+//     },
+//     fullName: DataTypes.STRING,
+//     email: DataTypes.STRING,
+//     password: DataTypes.STRING,
+//     phone: DataTypes.STRING,
+//     address: DataTypes.STRING
+//   }, {
+//     sequelize,
+//     modelName: 'User',
+//   });
+//   return User;
+// };
+
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+// 'use strict';
+// module.exports = {
+//   up: async (queryInterface, Sequelize) => {
+//     await queryInterface.createTable('Users', {
+//       id: {
+//         allowNull: false,
+//         autoIncrement: true,
+//         primaryKey: true,
+//         type: Sequelize.INTEGER
+//       },
+//       id: {
+//         allowNull: false,
+//         autoIncrement: true,
+//         primaryKey: true,
+//         type: Sequelize.INTEGER
+//       },
+//       fullName: {
+//         type: Sequelize.STRING
+//       },
+//       email: {
+//         type: Sequelize.STRING
+//       },
+//       password: {
+//         type: Sequelize.STRING
+//       },
+//       phone: {
+//         type: Sequelize.STRING
+//       },
+//       address: {
+//         type: Sequelize.STRING
+//       },
+//       createdAt: {
+//         allowNull: false,
+//         type: Sequelize.DATE
+//       },
+//       updatedAt: {
+//         allowNull: false,
+//         type: Sequelize.DATE
+//       }
+//     });
+//   },
+//   down: async (queryInterface, Sequelize) => {
+//     await queryInterface.dropTable('Users');
+//   }
+// };

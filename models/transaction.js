@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
           name: "idTrip"
         }
       });
+      Transaction.belongsTo(models.User, {
+        as: "user",
+        foreignKey: {
+          name: "idUser"
+        }
+      })
     }
   };
   Transaction.init({
@@ -29,16 +35,23 @@ module.exports = (sequelize, DataTypes) => {
     counterQty: DataTypes.INTEGER,
     total: DataTypes.INTEGER,
     status: DataTypes.STRING,
-    attachment: DataTypes.STRING,
     idTrip: {
       allowNull: false,
       as: "trip",
-      model: "Countries",
       foreignKey: {
         name: "idTrip"
       },
       type: DataTypes.INTEGER
-    }
+    },
+    idUser: {
+      allowNull: false,
+      as: "user",
+      foreignKey: {
+        name: "idUser"
+      },
+      type: DataTypes.INTEGER
+    },
+    struct: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Transaction',
