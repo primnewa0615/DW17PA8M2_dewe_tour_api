@@ -19,7 +19,7 @@
     "dialect": "postgrest",
     "protocol": "postgrest",
     "dialectOption": {
-    "ssl: true
+    "ssl" : true
     }
   }
 }
