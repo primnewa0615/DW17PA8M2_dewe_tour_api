@@ -170,7 +170,7 @@ exports.addImageTrip = async (req, res) => {
             data: { tripImg }
         });
     } catch (error) {
-        res.status(500).send({
+         res.status(500).send({
             error: {
                 messege: error
             }
